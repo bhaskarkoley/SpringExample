@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 import com.tsi.gprslkwinfo.dao.GprsLkwInfoDAO;
 import com.tsi.gprslkwinfo.model.GprsLkwInfo;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 /**
  * Created by osboxes on 28.11.16.
@@ -12,7 +13,7 @@ import com.tsi.gprslkwinfo.model.GprsLkwInfo;
 
 
 
-public class JdbcGprsLkwInfoDao extends SimpleJdbcDaoSupport implements GprsLkwInfoDAO {
+public class JdbcGprsLkwInfoDao extends JdbcDaoSupport implements GprsLkwInfoDAO {
     public void insert(GprsLkwInfo gprsLkwInfo){
 
         String sql = "INSERT INTO GPRS_LKWINFO " +
@@ -27,9 +28,8 @@ public class JdbcGprsLkwInfoDao extends SimpleJdbcDaoSupport implements GprsLkwI
     public GprsLkwInfo findByGprsLkwInfoLkwId(long lkwid) {
         String sql = "SELECT lkwid,kennzeichen FROM GPRS_LKWINFO WHERE LKWID = ?";
 
-        GprsLkwInfo gprsLkwInfo = getSimpleJdbcTemplate().queryForObject(
-                sql, new GprsLkwInfoParameterizedRowMapper(), lkwid);
-
+        GprsLkwInfo gprsLkwInfo = (GprsLkwInfo)getJdbcTemplate().queryForObject(
+                sql, new Object[]{lkwid}, new GprsLkwInfoParameterizedRowMapper());
 
         return gprsLkwInfo;
 
